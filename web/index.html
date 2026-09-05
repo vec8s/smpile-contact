@@ -1,138 +1,80 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Simple Contact</title>
-
+    <title>Simple Contact — محادثة الشبكة المحلية</title>
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-
-    <!-- شاشة تسجيل الدخول -->
-    <section id="join-section" class="join-section">
-
-        <div class="join-box">
-
-            <h1>Simple Contact</h1>
-
-            <p>تطبيق محادثة فورية</p>
-
-            <label for="username-input">
-                اسم المستخدم
-            </label>
-
-            <input type="text" id="username-input" placeholder="أدخل اسمك" autocomplete="off" maxlength="30">
-
-            <button id="join-btn">
-                انضمام
-            </button>
-
-            <p id="join-error" class="error-message"></p>
-
-        </div>
-
-    </section>
-
-
-    <!-- واجهة المحادثة -->
-    <section id="chat-section" class="chat-section hidden">
-
-        <!-- Header -->
-        <header class="header">
-
-            <div class="header-info">
-
-                <h1>Simple Contact</h1>
-
-                <span id="current-user-display">
-                    غير متصل
-                </span>
-
+    <div class="app-container">
+        <!-- شريط العنوان الرئيسي -->
+        <header class="main-header">
+            <div class="header-content">
+                <h1>💬 Simple Contact</h1>
+                <p class="subtitle">تطبيق المحادثة الفورية عبر الشبكة المحلية (LAN / Wi-Fi)</p>
             </div>
-
-            <div id="connection-status" class="connection-status">
-                <span id="status-text">
-                    غير متصل
-                </span>
+            <div id="connection-status" class="status-badge disconnected">
+                <span class="status-dot"></span>
+                <span id="status-text">غير متصل</span>
             </div>
-
         </header>
 
+        <!-- نافذة تسجيل الدخول وتحديد الاسم -->
+        <div id="join-section" class="card">
+            <h2>تسجيل الدخول للمحادثة</h2>
+            <p>أدخل اسم المستخدم للظهور أمام باقي أجهزة الشبكة:</p>
+            <div class="join-form">
+                <input type="text" id="username-input" placeholder="اسم المستخدم (مثال: أحمد)..." autocomplete="off" maxlength="20">
+                <button id="join-btn" class="btn btn-primary">انضمام (Join)</button>
+            </div>
+            <div id="join-error" class="alert-error hidden"></div>
+        </div>
 
-        <main class="chat-layout">
-
-            <!-- قائمة المستخدمين -->
-            <aside class="users-panel">
-
-                <div class="users-header">
-
-                    <h2>المستخدمون المتصلون</h2>
-
-                    <span id="users-count">
-                        0
-                    </span>
-
+        <!-- الواجهة الرئيسية للمحادثة بعد تسجيل الدخول -->
+        <div id="chat-section" class="card chat-layout hidden">
+            <!-- الشريط العلوي للمستخدم -->
+            <div class="chat-topbar">
+                <div class="user-info">
+                    <span>أنت متصل باسم:</span>
+                    <strong id="current-user-display">-</strong>
                 </div>
+                <button id="disconnect-btn" class="btn btn-danger">قطع الاتصال (Disconnect)</button>
+            </div>
 
-                <ul id="users-list">
-                    <!-- يتم إضافة المستخدمين بواسطة JavaScript -->
-                </ul>
+            <div class="chat-body">
+                <!-- القائمة الجانبية: المستخدمون المتصلون -->
+                <aside class="users-sidebar">
+                    <div class="sidebar-header">
+                        <h3>المتصلون حالياً (<span id="users-count">0</span>)</h3>
+                    </div>
+                    <ul id="users-list" class="users-list">
+                        <!-- يتم ملؤها ديناميكياً بواسطة JavaScript -->
+                    </ul>
+                </aside>
 
-            </aside>
-
-
-            <!-- منطقة المحادثة -->
-            <section class="conversation">
-
-                <div class="conversation-header">
-
-                    <h2 id="target-user-display">
-                        اختر مستخدمًا للمحادثة
-                    </h2>
-
-                </div>
-
-
-                <!-- صندوق الرسائل -->
-                <div id="messages-box" class="messages-box">
-
-                    <div class="empty-chat">
-                        اختر مستخدمًا من القائمة لبدء المحادثة.
+                <!-- منطقة المحادثة والرسائل -->
+                <main class="chat-main">
+                    <div class="chat-target-header">
+                        <span>المحادثة مع:</span>
+                        <strong id="target-user-display">اختر مستخدماً من القائمة</strong>
                     </div>
 
-                </div>
+                    <div id="messages-box" class="messages-box">
+                        <div class="system-message info">اختر أحد المتصلين من القائمة على اليمين لبدء المحادثة معه.</div>
+                    </div>
 
+                    <!-- نموذج كتابة وإرسال الرسالة -->
+                    <form id="message-form" class="message-form">
+                        <input type="text" id="message-input" placeholder="اكتب رسالتك هنا..." autocomplete="off" disabled>
+                        <button type="submit" id="send-btn" class="btn btn-send" disabled>إرسال</button>
+                    </form>
+                </main>
+            </div>
+        </div>
+    </div>
 
-                <!-- نموذج إرسال الرسالة -->
-                <form id="message-form" class="message-form">
-
-                    <input type="text" id="message-input" placeholder="اكتب رسالتك..." autocomplete="off" disabled>
-
-                    <button type="submit" id="send-btn" disabled>
-                        إرسال
-                    </button>
-
-                </form>
-
-            </section>
-
-        </main>
-
-
-        <!-- زر قطع الاتصال -->
-        <button id="disconnect-btn" class="disconnect-btn">
-            قطع الاتصال
-        </button>
-
-    </section>
-
-
+    <!-- كود JavaScript للعميل -->
     <script src="app.js"></script>
-
 </body>
-
 </html>
